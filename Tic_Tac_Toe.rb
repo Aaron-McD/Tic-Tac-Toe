@@ -2,15 +2,17 @@ require './board.rb'
 
 module TicTacToe
     def launch_game
+        chosen_char = ''
         puts "Hello and welcome to Tic Tac Toe! This is a game built right into your console for all of the Tic Tac Toe fun you could desire!"
         sleep(3)
         puts "\nFirst we need to start by creating our players so if player one would like to step up to the keyboard we can get started."
         sleep(3)
-        player1 = build_player
+        player1 = build_player(chosen_char)
         sleep(1)
         puts "\nAlright now lets create player two."
         sleep(2)
-        player2 = build_player
+        chosen_char = player1.sym
+        player2 = build_player(chosen_char)
         game = Game.new(player1, player2)
         sleep(1)
         puts "Alright lets get started!"
@@ -30,11 +32,11 @@ module TicTacToe
         end
     end
 
-    def build_player
+    def build_player(chosen_char)
         puts "\n\n"
         while true
             print "Please enter your name: "
-            name = gets.chomp
+            name = gets.chomp.strip
             print "Ok your name will be #{name}, are you satisfied with that? (y or n): "
             input = gets.chomp
             if(input.strip == 'y')
@@ -46,8 +48,17 @@ module TicTacToe
             end
         end
         while true
-            print "Enter the character you wish to use: "
-            char = gets.chomp
+            while true
+                print "Enter the character you wish to use: "
+                char = gets.chomp.strip
+                if(chosen_char.include?(char))
+                    puts "Sorry that character was already chosen."
+                elsif(char.length > 1)
+                    puts "Enter only one character for your character."
+                else
+                    break
+                end
+            end
             print "Ok your character will be #{char}, are you satisfied with that? (y or n): "
             input = gets.chomp
             if(input.strip == 'y')
